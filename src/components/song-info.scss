@@ -1,0 +1,30 @@
+.song-info {
+  .si--row {
+    display: flex;
+    flex-direction: row;
+  }
+  .si--icon {
+    margin-right: 0.5rem;
+    color: var(--bs-gray-400);
+    min-width: 1.5rem;
+    display: inline-block;
+  }
+  .si--title {
+    font-size: 1.75rem;
+    font-weight: 500;
+  }
+  .si--artist {
+    font-size: 1.25rem;
+  }
+  .si--album {
+    font-style: italic;
+  }
+  .si--content {
+    column-width: fill-available;
+    font-weight: 200;
+  }
+  .col-rating {
+    min-width: 4rem;
+    text-align: right;
+  }
+}

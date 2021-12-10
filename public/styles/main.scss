@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;500&display=swap');
+@import "./../../node_modules/bootstrap/scss/bootstrap";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+
+body {
+  //font-family: "Armata", var(--bs-body-font-family);
+
+  font-family: 'Hahmlet', var(--bs-body-font-family);
+  //font-family: 'Inconsolata', monospace;
+}

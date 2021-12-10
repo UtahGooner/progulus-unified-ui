@@ -1,7 +1,7 @@
 import {RatingThunkAction} from "./types";
 import {loadRatingFailed, saveRatingFailed, saveRatingRequested, saveRatingSucceeded} from "./index";
 import {loadCurrentRequested, loadCurrentSucceeded} from "../playing";
-import {fetchJSON} from "../fetch";
+import {fetchJSON} from "../../utils/fetch";
 import {BasicRating, SongRating, UserRating} from "../../types";
 
 const ratingURL = (songID: number) => `/api/rating/rating.php?songID=${encodeURIComponent(songID)}`;

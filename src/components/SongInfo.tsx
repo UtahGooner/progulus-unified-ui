@@ -1,19 +1,19 @@
 import React, {useState} from "react";
-import {BasicSong} from "../types";
+import {BasicSong, CurrentSong} from "../types";
 import './song-info.scss';
 import SongDuration from "./SongDuration";
 import RatingSlider from "../ducks/rating/RatingSlider";
 import SongRatingText from "../ducks/rating/SongRatingText";
 
 export interface SongInfoProps {
-    song: BasicSong,
+    song: CurrentSong,
     showDuration?: boolean,
     progress?: number,
 }
 
 const SongInfo: React.FC<SongInfoProps> = ({song, showDuration, progress = 1}) => {
     const [showCountUp, setShowCountUp] = useState(false);
-    const [showSlider, setShowSlider] = useState(false);
+    const [showSlider, setShowSlider] = useState(true);
 
     const duration = showCountUp ? song.duration * progress : song.duration;
 
@@ -39,13 +39,22 @@ const SongInfo: React.FC<SongInfoProps> = ({song, showDuration, progress = 1}) =
             <div className="si--row si--rating">
                 <div className="si--icon bi-star-fill"/>
                 <div className="si--content">
-                    <SongRatingText songId={song.id} showVotes={false}/>
+                    {/*<SongRatingText songId={song.id} showVotes={false}/>*/}
                 </div>
             </div>
             <div className="si--row si--rating-tool">
                 <div className="si--icon bi-star d-inline-block" onClick={() => setShowSlider(!showSlider)}/>
                 <div className="si--content">
                     <RatingSlider songId={song.id} showSlider={showSlider}/>
+                </div>
+            </div>
+            <div className="si--row si--requester">
+                <div className="si--icon bi-person-workspace"/>
+                <div className="si--content">
+                    <div>({song.requester})</div>
+                    {!!song.msg && (
+                        <div>{song.msg}</div>
+                    )}
                 </div>
             </div>
         </div>

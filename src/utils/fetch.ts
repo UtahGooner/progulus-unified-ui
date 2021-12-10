@@ -24,12 +24,13 @@ export async function fetchJSON(url:string, options:RequestInit = {}, body?:obje
             credentials: 'same-origin',
             ...options,
             body: typeof body === 'object' ? JSON.stringify(body) : body,
+            mode: 'no-cors',
             headers: {
                 ...contentTypeHeaders,
                 ...headers,
             }
         }
-        const res = await fetch(url, {credentials: 'same-origin', ...options});
+        const res = await fetch(url, init);
         return await handleJSONResponse(res);
     } catch(err:unknown) {
         if (err instanceof Error) {

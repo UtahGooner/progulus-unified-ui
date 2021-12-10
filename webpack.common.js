@@ -11,7 +11,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: '/node_modules/',
+                exclude: /node_modules/,
                 use: ['babel-loader']
             },
             {
@@ -52,8 +52,8 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, 'public/js'),
-        filename: "[name].js",
-        sourceMapFilename: '[file].map',
+        filename: "[name].bundle.js",
+        sourceMapFilename: '[file].bundle.map',
         publicPath: '/',
     },
     target: 'web',

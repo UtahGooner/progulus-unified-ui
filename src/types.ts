@@ -7,6 +7,14 @@ export interface StandardAction extends Action {
     error?: Error,
 }
 
+
+export interface CurrentPlaylist {
+    current?: CurrentSong,
+    recent: CurrentSong[],
+    queue: CurrentSong[],
+    errorMessage?: string,
+}
+
 export interface BasicSong {
     id: number,
     artist: string,
@@ -19,10 +27,10 @@ export interface BasicSong {
     rating: number,
     userRating: number,
     dateLastPlayed: number,
+    website: string,
 }
 
 export interface CurrentSong extends BasicSong {
-    website: string,
     requester: string,
     msgname: string,
     msg: string,

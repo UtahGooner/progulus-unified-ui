@@ -1,6 +1,6 @@
 import {PlayingThunkAction} from "./types";
 import {loadCurrentFailed, loadCurrentRequested, loadCurrentSucceeded} from "./index";
-import {fetchJSON} from "../fetch";
+import {fetchJSON} from "../../utils/fetch";
 import {CurrentSong} from "../../types";
 
 const pathLoadCurrent = '/api/playing/';

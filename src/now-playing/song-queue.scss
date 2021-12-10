@@ -1,0 +1,16 @@
+.np--queue-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border: 1px solid #0a53be;
+
+  .header {
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+  .song {
+    margin-right: 1.5rem;
+  }
+}

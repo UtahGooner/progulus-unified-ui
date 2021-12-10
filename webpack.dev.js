@@ -7,7 +7,7 @@ const localProxy = {
     target: {
         host: 'localhost',
         protocol: 'http:',
-        port: 8081
+        port: 8001
     },
     ignorePath: false,
     changeOrigin: true,
@@ -19,9 +19,11 @@ module.exports = merge(common, {
     devServer: {
         static: [path.join(__dirname, 'public'), __dirname],
         hot: true,
+        port: 8000,
         proxy: {
             '/api': {...localProxy},
             '/images/': {...localProxy},
+            '/rprweb/': {...localProxy},
         },
         historyApiFallback: {
         }

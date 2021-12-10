@@ -1,12 +1,12 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Armata&family=Inconsolata&display=swap");
 /*!
  * Bootstrap v5.1.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11115,7 +11115,10 @@ textarea.form-control-lg {
   }
 }
 body {
-  font-family: "Hahmlet", var(--bs-body-font-family);
+  font-family: "Armata", var(--bs-body-font-family);
+}
+body .mono {
+  font-family: "Inconsolata", monospace;
 }
 
 /*# sourceMappingURL=main.css.map */

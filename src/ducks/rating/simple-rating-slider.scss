@@ -1,0 +1,23 @@
+.si--rating-bar {
+  display: flex;
+  align-items: center;
+  justify-items: start;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  line-height: 1.5;
+
+  .si--user-rating {
+
+  }
+
+  .si--user-rating-tool {
+    height: calc(1.5 * 1rem);
+
+    input[type="range"] {
+      margin-left: 1rem;
+      height: calc(1.5 * 1rem);
+    }
+  }
+}

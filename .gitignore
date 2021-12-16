@@ -1,3 +1,8 @@
 # Project exclude paths
 /node_modules/
 /.idea
+/public/flags/
+/public/js/
+/dist/
+*.css
+*.css.map

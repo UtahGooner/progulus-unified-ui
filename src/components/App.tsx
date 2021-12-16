@@ -1,24 +1,25 @@
 import React, {useEffect} from "react";
+import {BrowserRouter as Router} from 'react-router-dom'
 import NowPlaying from "../ducks/playing/NowPlaying";
 import {useDispatch} from "react-redux";
 import {loadCurrentAction} from "../ducks/playing/actions";
-import NowPlayingContainer from "../now-playing/NowPlayingContainer";
+import ErrorBoundary from "./ErrorBoundary";
+import Queue from "../ducks/playing/Queue";
+import RecentSongs from "../ducks/playing/RecentSongs";
 
 const App: React.FC = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(loadCurrentAction());
+    }, [])
     return (
-        <div className="container-lg">
-            <div className="row g-3">
-                <div className="col-md-8">
-                    {/*<NowPlaying />*/}
-                    <NowPlayingContainer />
-                </div>
-                <div className="col-md-4">
-                    Tagboard container goes here.
-                    {/*<iframe src="//gutenprog.com/gt6/auth/progulus/24/SteveM" name="tagframe4"*/}
-                    {/*        style={{width:'100%', borderWidth:0, height: '570px'}} height="570" id="tagframe4" />*/}
-                </div>
-            </div>
-        </div>
+        <Router>
+            <ErrorBoundary>
+                <NowPlaying />
+                <Queue />
+                <RecentSongs />
+            </ErrorBoundary>
+        </Router>
     )
 }
 

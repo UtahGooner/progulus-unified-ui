@@ -20,7 +20,7 @@
     font-style: italic;
   }
   .si--content {
-    column-width: fill-available;
+    flex: 1 1 auto;
     font-weight: 200;
   }
   .col-rating {
@@ -29,6 +29,29 @@
   }
 
   .si--requester {
-    font-size: small;
+    margin-top: 0.75rem;
   }
+
+  .si--rating-bar {
+    display: flex;
+    flex-direction: row;
+
+    .si--user-rating {
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .si--user-rating-tool {
+      min-width: 100px;
+      max-width: 150px;
+      height: 1.5rem;
+    }
+  }
+
+  .si--rating {
+    .si--all-rating {
+      flex: 0 0 auto;
+    }
+  }
+
 }

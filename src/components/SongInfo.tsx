@@ -1,36 +1,34 @@
 import React, {useState} from "react";
-import {BasicSong, CurrentSong} from "../types";
+import {CurrentSong} from "../types";
 import './song-info.scss';
 import SongDuration from "./SongDuration";
+import ArtistLink from "./ArtistLink";
 import RatingSlider from "../ducks/rating/RatingSlider";
+import FlagIcon from "./FlagIcon";
 import SongRatingText from "../ducks/rating/SongRatingText";
+import ArtistSiteLink from "./ArtistSiteLink";
 
 export interface SongInfoProps {
-    song: CurrentSong,
-    showDuration?: boolean,
-    progress?: number,
+    song: CurrentSong
 }
 
-const SongInfo: React.FC<SongInfoProps> = ({song, showDuration, progress = 1}) => {
-    const [showCountUp, setShowCountUp] = useState(false);
-    const [showSlider, setShowSlider] = useState(true);
+const SongInfo: React.FC<SongInfoProps> = ({song}) => {
+    const [showSlider, setShowSlider] = useState(false);
 
-    const duration = showCountUp ? song.duration * progress : song.duration;
 
     return (
         <div className="song-info">
-            <div className="row g-3">
-                <div className="col">
-                    <h3 className="si--title">{song.title}</h3>
-                </div>
-                <div className="col-auto col-rating">
-                    {showDuration && (<SongDuration duration={duration} onClick={() => setShowCountUp(!showCountUp)}/>)}
-                </div>
-            </div>
+            <h3 className="si--title">{song.title}</h3>
 
             <div className="si--row si--artist">
                 <div className="si--icon bi-person-circle"/>
-                <div className="si--content">{song.artist}</div>
+                <div className="si--content">
+                    <ArtistLink artist={song.artist}/>
+                    <small className="ms-3">
+                        <ArtistSiteLink url={song.website} />
+                        <FlagIcon countryCode={song.country} />
+                    </small>
+                </div>
             </div>
             <div className="si--row si--album">
                 <div className="si--icon bi-disc-fill"/>
@@ -39,13 +37,13 @@ const SongInfo: React.FC<SongInfoProps> = ({song, showDuration, progress = 1}) =
             <div className="si--row si--rating">
                 <div className="si--icon bi-star-fill"/>
                 <div className="si--content">
-                    {/*<SongRatingText songId={song.id} showVotes={false}/>*/}
+                    <SongRatingText songId={song.id} showVotes={false}/>
                 </div>
             </div>
             <div className="si--row si--rating-tool">
-                <div className="si--icon bi-star d-inline-block" onClick={() => setShowSlider(!showSlider)}/>
+                <div className="si--icon bi-star d-inline-block" onClick={() => setShowSlider(!showSlider)} />
                 <div className="si--content">
-                    <RatingSlider songId={song.id} showSlider={showSlider}/>
+                    <RatingSlider songId={song.id} showSlider={true}/>
                 </div>
             </div>
             <div className="si--row si--requester">

@@ -1,5 +1,72 @@
 .np {
   &--album-cover-container {
     text-align: center;
+    &.zoomed {
+      width: 100%;
+    }
+  }
+
+  &--song-info {
+    &.zoomed {
+      display: none;
+    }
+  }
+
+  &--recent-song-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &--recent-song {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-width: 250px;
+
+    &-artwork {
+      cursor: pointer;
+    }
+
+    &-info {
+      margin-top: 0.25rem;
+      * {
+        font-size: 0.75rem;
+      }
+      .si--title {
+        font-size: 1rem;
+      }
+
+      &.hidden {
+        display: none;
+      }
+    }
+
+    .si--content {
+
+    }
+  }
+}
+
+.progulus--queue {
+  margin-top: 3rem;
+  border: 1px solid #665;
+  padding: 1rem;
+  &-title {
+    h3 {
+      font-size: 1.5rem;
+    }
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }

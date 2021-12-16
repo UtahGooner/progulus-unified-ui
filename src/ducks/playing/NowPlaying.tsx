@@ -6,6 +6,8 @@ import AlbumCover from "../../components/AlbumCover";
 import SongInfo from "../../components/SongInfo";
 import Progress from "../../components/Progress";
 import './now-playing.scss';
+import SongDuration from "../../components/SongDuration";
+import classNames from "classnames";
 
 
 const calcProgress = (now: number, startTime: number, endTime: number) => endTime === startTime ? 0 : ((now - startTime) / (endTime - startTime));
@@ -16,8 +18,11 @@ const NowPlaying: React.FC = () => {
     const currentSong = useSelector(selectCurrentSong);
     const loading = useSelector(selectLoading);
 
+    const [zoomed, setZoomed] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [showCountUp, setShowCountUp] = useState(false);
 
+    const currentDuration = currentSong ? (showCountUp ? currentSong.duration * progress : currentSong.duration) : 0;
 
     useEffect(() => {
         if (!timerHandle) {
@@ -37,6 +42,10 @@ const NowPlaying: React.FC = () => {
                 }
             }, 1000);
         }
+        document.querySelectorAll('#progulus--listeners')
+            .forEach((el) => {
+                el.innerHTML = (currentSong?.listeners || '-').toString();
+            })
         return () => {
             window.clearInterval(timerHandle);
         }
@@ -46,22 +55,26 @@ const NowPlaying: React.FC = () => {
         return null;
     }
 
-    const {artist, album, picture, albumYear, title, dateLastPlayed, duration, offset,} = currentSong || {};
+    const {artist, album, picture, albumYear} = currentSong || {};
     return (
-        <div className="row g-3">
-            <div className="col-sm-6 np--album-cover-container">
-                <AlbumCover artist={artist} album={album} albumYear={albumYear} picture={picture}/>
-                <Progress width={loading ? 1 : progress} animated={loading} style={{height: '3px'}}/>
+        <div>
+            <div className="row g-3 g-lg-5">
+                <div className={classNames("col-12 col-md-6 np--album-cover-container", {zoomed: zoomed})}>
+                    <AlbumCover artist={artist} album={album} albumYear={albumYear} picture={picture}
+                                loading="eager" onClick={() => setZoomed(!zoomed)}/>
+                    <div className="row g-1">
+                        <div className="col">
+                            <Progress width={loading ? 1 : progress} animated={loading}/>
+                        </div>
+                        <div className="col-auto">
+                            <SongDuration duration={currentDuration} onClick={() => setShowCountUp(!showCountUp)}/>
+                        </div>
+                    </div>
+                </div>
+                <div className={classNames("col-12 col-md-6 np--song-info", {zoomed: zoomed})}>
+                    <SongInfo song={currentSong} />
+                </div>
             </div>
-            <div className="col-sm-6">
-                <SongInfo song={currentSong} showDuration={true} progress={progress}/>
-            </div>
-            <code>
-                <pre>
-                    {JSON.stringify(currentSong, undefined, 2)}
-                </pre>
-            </code>
-            <button type="button" onClick={() => dispatch(loadCurrentAction())}>Reload Current Song</button>
         </div>
     )
 }

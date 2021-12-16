@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Armata&family=Inconsolata&display=swap');
-@import "./../../node_modules/bootstrap/scss/bootstrap";
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css");
+
 
 body {
   font-family: "Armata", var(--bs-body-font-family);
@@ -8,4 +7,42 @@ body {
   .mono {
     font-family: 'Inconsolata', monospace;
   }
+
+  .np--recent-song-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .np--recent-song {
+      max-width: 50%;
+      //margin-left: 0.5rem;
+      //margin-right: 0.5rem;
+
+    }
+    @media (min-width: 768px) {
+      .np--recent-song {
+        max-width: 33.3333333%;
+      }
+    }
+    @media (min-width: 1200px) {
+      .np--recent-song {
+        max-width: 25%;
+      }
+    }
+  }
+
+  #progulus--header-logo {
+    height: 180px;
+    background-image: url(/rprweb/images/progulus-logo-1.png);
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    @media (min-width: 560px) {
+      background-size: auto;
+    }
+  }
+
 }
+
+
+@import "../../node_modules/flag-icon-css/sass/flag-icons";

@@ -6,15 +6,16 @@ import {RootState} from "../index";
 
 export interface PlayingState {
     current: CurrentSong | null,
-    history: BasicSong[],
-    queue: BasicSong[],
+    history: CurrentSong[],
+    queue: CurrentSong[],
     loading:false,
 }
 
 export interface PlayingAction extends StandardAction {
     payload?: {
-        songs: CurrentSong[],
-        queue: BasicSong[],
+        songs?: CurrentSong[],
+        queue?: CurrentSong[],
+        count?: number,
     }
 }
 

@@ -1,4 +1,5 @@
 import React from "react";
+import Duration from "./Duration";
 
 const noop = () => {};
 interface SongDurationProps {
@@ -7,10 +8,8 @@ interface SongDurationProps {
 }
 
 const SongDuration:React.FC<SongDurationProps> = ({duration, onClick = noop}) => {
-    const minutes = Math.floor(duration / 60000);
-    const seconds = Math.floor((duration % 60000) / 1000);
     return (
-        <span className="si--duration" onClick={onClick}>{String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</span>
+        <span className="si--duration" onClick={onClick}><Duration duration={duration} /></span>
     )
 }
 

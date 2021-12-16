@@ -2,11 +2,14 @@ import {combineReducers} from "redux";
 import {PlayingAction, PlayingState} from "./types";
 import {BasicSong, CurrentSong} from "../../types";
 import {RootState} from "../index";
+import {getStore, store_historyLimit} from "../../utils/browserStore";
 
 
 export const loadCurrentRequested = 'playing/loadCurrentRequested';
 export const loadCurrentSucceeded = 'playing/loadCurrentSucceeded';
 export const loadCurrentFailed = 'playing/loadCurrentFailed';
+
+export const historyCountChanged = 'playing/historyCountChanged';
 
 const defaultState:PlayingState = {
     current: null,
@@ -19,6 +22,9 @@ export const selectCurrentSong = (state:RootState):CurrentSong|null => state.pla
 export const selectQueue = (state:RootState) => state.playing.queue;
 export const selectHistory = (state:RootState) => state.playing.history;
 export const selectLoading = (state:RootState) => state.playing.loading;
+export const selectHistoryCount = (state:RootState) => state.playing.historyCount;
+
+const historySort = (a:CurrentSong, b:CurrentSong) => b.dateLastPlayed - a.dateLastPlayed;
 
 const currentReducer = (state:CurrentSong|null = defaultState.current, action:PlayingAction):CurrentSong|null => {
     const {type, payload} = action;
@@ -32,7 +38,7 @@ const currentReducer = (state:CurrentSong|null = defaultState.current, action:Pl
     }
 }
 
-const queueReducer = (state:BasicSong[] = defaultState.queue, action:PlayingAction):BasicSong[] => {
+const queueReducer = (state:CurrentSong[] = defaultState.queue, action:PlayingAction):CurrentSong[] => {
     const {type, payload} = action;
     switch (type) {
     case loadCurrentSucceeded:
@@ -41,13 +47,13 @@ const queueReducer = (state:BasicSong[] = defaultState.queue, action:PlayingActi
     }
 }
 
-const historyReducer = (state:BasicSong[] = defaultState.history, action:PlayingAction):BasicSong[] => {
+const historyReducer = (state:CurrentSong[] = defaultState.history, action:PlayingAction):CurrentSong[] => {
     const {type, payload} = action;
     switch (type) {
     case loadCurrentSucceeded:
-        if (payload?.songs) {
+        if (payload?.songs && payload.songs.length > 1) {
             const [current, ...history] = payload.songs;
-            return history;
+            return history.sort(historySort);
         }
         return state;
     default: return state;
@@ -65,9 +71,21 @@ const loadingReducer = (state:boolean = defaultState.loading, action:PlayingActi
     }
 }
 
+const defaultHistoryCount = getStore(store_historyLimit) ?? 10;
+
+const historyCountReducer = (state:number = defaultHistoryCount, action:PlayingAction):number => {
+    const {type, payload} = action;
+    switch (type) {
+    case historyCountChanged:
+        return payload?.count || 10;
+    default: return state;
+    }
+}
+
 export default combineReducers({
     current: currentReducer,
     queue: queueReducer,
     history: historyReducer,
-    loading: loadingReducer
+    loading: loadingReducer,
+    historyCount: historyCountReducer,
 })

@@ -1,15 +1,34 @@
 import {PlayingThunkAction} from "./types";
-import {loadCurrentFailed, loadCurrentRequested, loadCurrentSucceeded} from "./index";
+import {
+    historyCountChanged,
+    loadCurrentFailed,
+    loadCurrentRequested,
+    loadCurrentSucceeded, selectHistoryCount,
+    selectLoading
+} from "./index";
 import {fetchJSON} from "../../utils/fetch";
 import {CurrentSong} from "../../types";
+import {setStore, store_historyLimit} from "../../utils/browserStore";
 
 const pathLoadCurrent = '/api/playing/';
+
+export const historyCountChangedAction = (count: number) => {
+    setStore(store_historyLimit, count);
+    return ({type: historyCountChanged, payload: {count}});
+}
 
 export const loadCurrentAction = ():PlayingThunkAction =>
     async (dispatch, getState) => {
     try {
+        const state = getState();
+        if (selectLoading(state)) {
+            return;
+        }
+        const count = selectHistoryCount(state);
+        const url = pathLoadCurrent + `?limit=${encodeURIComponent(count + 1)}`;
+
         dispatch({type: loadCurrentRequested});
-        const {debug, songs, queue} = await fetchJSON(pathLoadCurrent, {cache: 'no-cache'});
+        const {debug, songs, queue} = await fetchJSON(url, {cache: 'no-cache'});
         if (debug) {
             console.log(debug);
         }

@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.tsx',
     module: {
         rules: [
             {
@@ -41,19 +41,14 @@ module.exports = {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
                     chunks: 'all',
-                },
-                chums: {
-                    test: /[\\/]common-components[\\/]/,
-                    name: 'chums',
-                    chunks: 'all',
-                },
+                }
             }
         }
     },
     output: {
         path: path.join(__dirname, 'public/js'),
         filename: "[name].bundle.js",
-        sourceMapFilename: '[file].bundle.map',
+        sourceMapFilename: '[file].map',
         publicPath: '/',
     },
     target: 'web',

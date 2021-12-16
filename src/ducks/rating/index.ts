@@ -25,6 +25,7 @@ export const selectUserSongRating = (id:number) => (state:RootState) => state.ra
 const listReducer = (state:SongRatingList = defaultState.list, action:RatingAction):SongRatingList => {
     const {type, payload} = action;
     switch (type) {
+    case saveRatingSucceeded:
     case loadRatingSucceeded:
         if (payload?.rating && payload.rating.songID) {
             return {

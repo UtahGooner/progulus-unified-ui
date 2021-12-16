@@ -28,6 +28,7 @@ export interface BasicSong {
     userRating: number,
     dateLastPlayed: number,
     website: string,
+    country: string,
 }
 
 export interface CurrentSong extends BasicSong {
@@ -37,6 +38,7 @@ export interface CurrentSong extends BasicSong {
     sinceStart: number,
     now: number,
     offset: number,
+    listeners: number,
 }
 
 

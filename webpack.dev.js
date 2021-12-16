@@ -17,8 +17,8 @@ const localProxy = {
 module.exports = merge(common, {
     mode: 'development',
     devServer: {
-        static: [path.join(__dirname, 'public'), __dirname],
-        hot: true,
+        static: [path.join(__dirname, 'public')],
+        // hot: true,
         port: 8000,
         proxy: {
             '/api': {...localProxy},
@@ -26,10 +26,10 @@ module.exports = merge(common, {
             '/rprweb/': {...localProxy},
         },
         historyApiFallback: {
-        }
+        },
+        liveReload: true,
+        watchFiles: ['src/**/*']
     },
     devtool: 'source-map',
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-    ]
+    plugins: []
 });

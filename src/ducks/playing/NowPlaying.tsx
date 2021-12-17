@@ -51,7 +51,9 @@ const NowPlaying: React.FC = () => {
         }
     }, [currentSong?.id]);
 
-    if (!currentSong) {
+    if (!currentSong && loading) {
+        return (<h3>Loading current song and history...</h3>);
+    } else if (!currentSong) {
         return null;
     }
 

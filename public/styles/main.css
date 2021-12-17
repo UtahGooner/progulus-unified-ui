@@ -3,6 +3,12 @@
 body {
   font-family: "Armata", var(--bs-body-font-family);
 }
+body a {
+  text-decoration: unset;
+}
+body a:hover {
+  text-decoration: underline;
+}
 body .mono {
   font-family: "Inconsolata", monospace;
 }
@@ -35,6 +41,22 @@ body #progulus--header-logo {
   body #progulus--header-logo {
     background-size: auto;
   }
+}
+#progulus--header-logo-container {
+  margin-top: 66px;
+}
+
+body #progulus--main-body {
+  margin-top: 66px;
+}
+body #progulus--main-body .progulus--sub-header {
+  margin-bottom: 1rem;
+}
+body #progulus--main-body .progulus--sub-header .progulus--current-listeners {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .flag-icon-background, .flag-icon {
@@ -588,10 +610,10 @@ body #progulus--header-logo {
   background-image: url(../flags/1x1/ga.svg);
 }
 
-.flag-icon-gb {
+.flag-icon-gb, .flag-icon-uk {
   background-image: url(../flags/4x3/gb.svg);
 }
-.flag-icon-gb.flag-icon-squared {
+.flag-icon-gb.flag-icon-squared, .flag-icon-squared.flag-icon-uk {
   background-image: url(../flags/1x1/gb.svg);
 }
 

@@ -20,12 +20,6 @@ const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 render(
     <Provider store={store}>
-        <NavBar/>
-    </Provider>, document.getElementById('progulus--nav-header')
-);
-
-render(
-    <Provider store={store}>
         <App/>
-    </Provider>, document.getElementById('progulus--main')
+    </Provider>, document.getElementById('progulus--app-container')
 );

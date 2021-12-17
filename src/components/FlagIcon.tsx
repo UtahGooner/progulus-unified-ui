@@ -15,7 +15,7 @@ const FlagIcon:React.FC<FlagIconProps> = ({countryCode, square}) => {
     })
 
     return (
-        <span className={className} />
+        <span className={className} title={countryCode} />
     )
 }
 

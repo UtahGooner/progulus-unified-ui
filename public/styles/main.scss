@@ -4,6 +4,12 @@
 body {
   font-family: "Armata", var(--bs-body-font-family);
 
+  a {
+    text-decoration: unset;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
   .mono {
     font-family: 'Inconsolata', monospace;
   }
@@ -31,6 +37,7 @@ body {
     }
   }
 
+
   #progulus--header-logo {
     height: 180px;
     background-image: url(/rprweb/images/progulus-logo-1.png);
@@ -40,9 +47,33 @@ body {
     @media (min-width: 560px) {
       background-size: auto;
     }
+
+    @at-root #progulus--header-logo-container {
+      margin-top: 66px;
+    }
   }
+
+  #progulus--main-body {
+    margin-top: 66px;
+
+    .progulus--sub-header {
+      margin-bottom: 1rem;
+      .progulus--current-listeners {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+      }
+    }
+  }
+
 
 }
 
 
 @import "../../node_modules/flag-icon-css/sass/flag-icons";
+.flag-icon-uk {
+  @extend .flag-icon-gb;
+}
+
+

@@ -7,6 +7,7 @@ import RatingSlider from "../ducks/rating/RatingSlider";
 import FlagIcon from "./FlagIcon";
 import SongRatingText from "../ducks/rating/SongRatingText";
 import ArtistSiteLink from "./ArtistSiteLink";
+import AlbumLink from "./AlbumLink";
 
 export interface SongInfoProps {
     song: CurrentSong
@@ -32,7 +33,10 @@ const SongInfo: React.FC<SongInfoProps> = ({song}) => {
             </div>
             <div className="si--row si--album">
                 <div className="si--icon bi-disc-fill"/>
-                <div className="si--content">{song.album} ({song.albumYear})</div>
+                <div className="si--content">
+                    <AlbumLink artist={song.artist} album={song.album} />
+                    <span className="ms-3">({song.albumYear})</span>
+                </div>
             </div>
             <div className="si--row si--rating">
                 <div className="si--icon bi-star-fill"/>
@@ -46,17 +50,19 @@ const SongInfo: React.FC<SongInfoProps> = ({song}) => {
                     <RatingSlider songId={song.id} showSlider={true}/>
                 </div>
             </div>
-            <div className="si--row si--requester">
-                <div className="si--icon bi-person-workspace"/>
-                <div className="si--content">
-                    <div>({song.requester})</div>
-                    {!!song.msg && (
-                        <div>{song.msg}</div>
-                    )}
+            {song.requester && (
+                <div className="si--row si--requester">
+                    <div className="si--icon bi-person-workspace"/>
+                    <div className="si--content">
+                        <div>{song.requester}</div>
+                        {!!song.msg && (
+                            <div>{song.msg}</div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }
 
-export default SongInfo;
+export default React.memo(SongInfo);

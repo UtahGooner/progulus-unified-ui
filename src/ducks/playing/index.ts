@@ -23,6 +23,7 @@ export const selectQueue = (state:RootState) => state.playing.queue;
 export const selectHistory = (state:RootState) => state.playing.history;
 export const selectLoading = (state:RootState) => state.playing.loading;
 export const selectHistoryCount = (state:RootState) => state.playing.historyCount;
+export const selectListenerCount = (state:RootState) => state.playing.current?.listeners || 0;
 
 const historySort = (a:CurrentSong, b:CurrentSong) => b.dateLastPlayed - a.dateLastPlayed;
 

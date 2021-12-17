@@ -6,10 +6,10 @@ export interface ArtistLinkProps {
 }
 
 const ArtistLink:React.FC<ArtistLinkProps> = ({artist}) => {
-    const link = `/ui/artist/${encodeURIComponent(artist)}`;
+    const link = `/artist/${encodeURIComponent(artist)}`;
     return (
         <Link to={link}>{artist}</Link>
     )
 }
 
-export default ArtistLink;
+export default React.memo(ArtistLink);

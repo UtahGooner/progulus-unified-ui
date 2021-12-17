@@ -39,16 +39,16 @@ const App: React.FC = () => {
                         <Route path="/request">
                             <h2>Request page goes here.</h2>
                         </Route>
-                        <Route path="/ui/history">
+                        <Route path="/history">
                             <h2>History goes here.</h2>
                         </Route>
-                        <Route path="/ui/search">
+                        <Route path="/search">
                             <h2>How should this be different than request page?</h2>
                         </Route>
-                        <Route path="/ui/forums">
+                        <Route path="/forums">
                             <h2>Maybe I can pull the forums in?</h2>
                         </Route>
-                        <Route path="/artist/:artist/:album">
+                        <Route path="/artist/:artist/:album?">
                             <ArtistPage />
                         </Route>
                     </div>

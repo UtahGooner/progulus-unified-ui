@@ -12,7 +12,7 @@ const RecentSong:React.FC<RecentSongProps> = ({song}) => {
     const [showInfo, setShowInfo] = useState(false);
 
     return (
-        <div className="np--recent-song">
+        <div className={classNames("np--recent-song", {selected: showInfo})}>
             <div className="np--recent-song-artwork">
                 <AlbumCover artist={song.artist} album={song.album} albumYear={song.albumYear} picture={song.picture}
                             loading="lazy" onClick={() => setShowInfo(!showInfo)}/>

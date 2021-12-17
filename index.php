@@ -57,13 +57,13 @@ if (count($searchParams) > 0 && in_array($searchParams['0'], $validPaths)) {
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <?php
     $path = pathinfo('./public/js/manifest.json');
-    $json = file_get_contents('./public/js/manifest.json');
+    $json = file_get_contents(__DIR__ . '/public/js/manifest.json');
     $files = json_decode($json);
     foreach ($files as $file) {
         if (pathinfo($file, PATHINFO_EXTENSION) !== 'js') {
             continue;
         }
-        $jsFile = $path['dirname'] . str_replace('//', '/', '/' . $file);
+        $jsFile = '/ui/public/js' . str_replace('//', '/', '/' . $file);
         echo "<script src=\"{$jsFile}\"></script>";
     }
     ?>

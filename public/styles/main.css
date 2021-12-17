@@ -18,11 +18,20 @@ body .np--recent-song-list {
   flex-wrap: wrap;
 }
 body .np--recent-song-list .np--recent-song {
-  max-width: 50%;
+  max-width: 100%;
 }
 @media (min-width: 768px) {
   body .np--recent-song-list .np--recent-song {
-    max-width: 33.3333333%;
+    max-width: 50%;
+    transition: width ease-in-out 0.4s;
+  }
+  body .np--recent-song-list .np--recent-song.selected {
+    max-width: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  body .np--recent-song-list .np--recent-song {
+    max-width: 33.33333%;
   }
 }
 @media (min-width: 1200px) {

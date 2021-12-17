@@ -12,7 +12,7 @@ const ArtistSiteLink: React.FC<ArtistSiteLinkProps> = ({url}) => {
         url = `//${url}`;
     }
     return (
-        <a href={url} target="_blank" className="bi-link-45deg"/>
+        <a href={url} target="_blank" rel="noopener" className="bi-link-45deg"/>
     )
 }
 

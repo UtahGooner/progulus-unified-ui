@@ -20,16 +20,27 @@ body {
     flex-wrap: wrap;
 
     .np--recent-song {
-      max-width: 50%;
+      max-width: 100%;
       //margin-left: 0.5rem;
       //margin-right: 0.5rem;
 
     }
     @media (min-width: 768px) {
       .np--recent-song {
-        max-width: 33.3333333%;
+        max-width: 50%;
+        transition: width ease-in-out 0.4s;
+        &.selected {
+          max-width: 100%;
+        }
       }
     }
+
+    @media (min-width: 1024px) {
+      .np--recent-song {
+        max-width: 33.33333%;
+      }
+    }
+
     @media (min-width: 1200px) {
       .np--recent-song {
         max-width: 25%;

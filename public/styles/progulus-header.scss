@@ -1,0 +1,97 @@
+$light-logo: './images/progulus-logo-1.png';
+$dark-logo: './images/progulus-logo-dark.png';
+
+@use "sass:selector";
+
+#progulus--header-logo {
+  height: 180px;
+  background-image: url($light-logo);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  @media (min-width: 560px) {
+    background-size: auto;
+  }
+
+  @at-root #progulus--header-logo-container {
+    margin-top: 66px;
+  }
+
+  @at-root body.dark #progulus--header-logo {
+    background-image: url($dark-logo);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-image: url($dark-logo);
+  }
+
+}
+
+.navbar {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+  @at-root body.dark .navbar {
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+
+  .navbar-brand {
+    color: rgba(0, 0, 0, 0.9);
+    @at-root body.dark .navbar-brand {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    @media (prefers-color-scheme: dark) {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+  .navbar-toggler {
+    color: rgba(0, 0, 0, 0.55);
+    border-color: rgba(0, 0, 0, 0.1);
+
+    @at-root body.dark .navbar-toggler {
+      color: rgba(255, 255, 255, 0.55);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      color: rgba(255, 255, 255, 0.55);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.55);
+    &:hover {
+      color: rgba(0,0,0,.7);
+    }
+
+    @at-root body.dark .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.55);
+      &:hover {
+        color: rgba(255,255,255,.75);
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: rgba(255, 255, 255, 0.55);
+      &:hover {
+        color: rgba(255,255,255,.75);
+      }
+    }
+  }
+
+  .navbar-nav .show > .nav-link,
+  .navbar-nav .nav-link.active {
+
+    @at-root & {
+      color: green
+    }
+    color: rgba(0, 0, 0, 0.9);
+    @media (prefers-color-scheme: dark) {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+}

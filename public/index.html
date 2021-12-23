@@ -7,16 +7,37 @@
     <title>Progulus UI</title>
     <meta name="description" content="Progulus User Interface"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Armata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
+<script>
+    window.progulus_state = {
+        alerts: {
+            list: [],
+        },
+        playing: {
+            current: {"id":171318,"duration":329091,"artist":"Daniel Tompkins","album":"Ruins","title":"Ruins","country":"UK","website":"www.danieltompkinsvocalist.com","buycd":"","picture":"Daniel Tompkins Ruins.jpg","votes":4,"rating":4.625,"dateLastPlayed":1640044170,"sinceStart":115,"now":1640044285,"requester":"Buckminsterfullerene","msgname":"Buckminsterfullerene","msg":"","albumYear":"2020","userRating":0,"listeners":19},
+            queue: [{"id":57093,"duration":422670,"artist":"Dec Burke","album":"Destroy All Monsters","title":"Destroy All Monsters","country":"UK","website":"www.progarchives.com\/artist.asp?id=5924","buycd":"","picture":"db-monsters.jpg","votes":12,"rating":4.625,"dateLastPlayed":0,"sinceStart":0,"now":0,"requester":"Buckminsterfullerene","msgname":"","msg":"","albumYear":"","userRating":5,"listeners":0},{"id":83100,"duration":258403,"artist":"The Dear Hunter","album":"Act II: The Meaning Of, & All Things Regarding Ms. Leading","title":"The Oracles On The Delphi Express","country":"US","website":"www.thedearhunter.com","buycd":"","picture":"Dear Hunter Act II- The Meaning Of & All Things Regarding Ms. Leading.jpg","votes":9,"rating":4.61111,"dateLastPlayed":0,"sinceStart":0,"now":0,"requester":"Buckminsterfullerene","msgname":"","msg":"","albumYear":"","userRating":0,"listeners":0},{"id":168895,"duration":298005,"artist":"Knight Area","album":"D-Day","title":"The Landing","country":"NL","website":"www.knightarea.com","buycd":"","picture":"knight area d-day.jpg","votes":1,"rating":4.5,"dateLastPlayed":0,"sinceStart":0,"now":0,"requester":"Buckminsterfullerene","msgname":"","msg":"","albumYear":"","userRating":0,"listeners":0}],
+            history: [{"id":49645,"duration":295401,"artist":"Blue Murder","album":"Blue Murder","title":"Blue Murder","country":"UK","website":"http:\/\/en.wikipedia.org\/wiki\/Blue_Murder_(band)","buycd":"","picture":"bluemurder-st.jpg","votes":5,"rating":4.9,"dateLastPlayed":1640043874,"sinceStart":411,"now":1640044285,"requester":"Buckminsterfullerene","msgname":"Buckminsterfullerene","msg":"","albumYear":"1989","userRating":0,"listeners":20},{"id":148028,"duration":394092,"artist":"Blind Guardian","album":"At The Edge Of Time","title":"Valkyries","country":"DE","website":"www.blind-guardian.com","buycd":"","picture":"bg-edgetime.jpg","votes":2,"rating":5,"dateLastPlayed":1640043480,"sinceStart":805,"now":1640044285,"requester":"Buckminsterfullerene","msgname":"Buckminsterfullerene","msg":"","albumYear":"2010","userRating":0,"listeners":22},{"id":35756,"duration":387901,"artist":"Saga","album":"Worlds Apart Revisited (Disk 1)","title":"Ice Nice","country":"CA","website":"www.sagaontour.moonfruit.com","buycd":"","picture":"saga-war.jpg","votes":3,"rating":4.83333,"dateLastPlayed":1640043092,"sinceStart":1193,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"2007","userRating":0,"listeners":21},{"id":66392,"duration":428147,"artist":"Spiritual Beggars","album":"Earth Blues CD2","title":"Euphoria","country":"SE","website":"www.spiritualbeggars.com","buycd":"","picture":"sb-earthblues.jpg","votes":1,"rating":4.5,"dateLastPlayed":1640042664,"sinceStart":1621,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"2013","userRating":0,"listeners":21},{"id":89290,"duration":360368,"artist":"King Crimson","album":"In The Court Of The Crimson King (2009 Steven Wilson Stereo Remix-Remaster)","title":"I Talk To The Wind","country":"UK","website":"www.king-crimson.com","buycd":"","picture":"kc-court.jpg","votes":5,"rating":4.7,"dateLastPlayed":1640042304,"sinceStart":1981,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"1969","userRating":4,"listeners":21},{"id":64523,"duration":91716,"artist":"Glass Hammer","album":"Perilous","title":"As The Sun Dipped Low","country":"US","website":"www.glasshammer.com","buycd":"","picture":"gh-perilous.jpg","votes":0,"rating":0,"dateLastPlayed":1640042212,"sinceStart":2073,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"2012","userRating":0,"listeners":21},{"id":39298,"duration":400518,"artist":"The Moody Blues","album":"Days Of Future Passed","title":"Evening-The Sunset-Twilight Time","country":"UK","website":"www.moodyblues.co.uk","buycd":"","picture":"tmb-futurepassed.jpg","votes":11,"rating":4.59091,"dateLastPlayed":1640041811,"sinceStart":2474,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"1967","userRating":4,"listeners":21},{"id":178859,"duration":268042,"artist":"Kristoffer Gildenl\u00f6w","album":"Let Me Be A Ghost","title":"Fleeting Thought","country":"SE","website":"www.kristoffergildenlow.com","buycd":"","picture":"kristoffer gildenl\u00f6w let me be a ghost.jpg","votes":0,"rating":0,"dateLastPlayed":1640041543,"sinceStart":2742,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"2021","userRating":0,"listeners":22},{"id":17824,"duration":597185,"artist":"Pendragon","album":"The Jewel (remasterised)","title":"The Black Knight","country":"UK","website":"www.pendragon.mu","buycd":"","picture":"pendrag-jewel.jpg","votes":6,"rating":4.91667,"dateLastPlayed":1640040946,"sinceStart":3339,"now":1640044285,"requester":"HAL","msgname":"","msg":"","albumYear":"2005","userRating":0,"listeners":23}]
+        },
+        rating: {
+            list: {},
+        },
+        user: {
+            id: "24",
+            name: "SteveM",
+            avatar: "24.jpg",
+        }
+    }
+</script>
 <div id="progulus--app-container"></div>
 <template id="progulus--tagboard">
     <iframe src="//gutenprog.com/gt6/auth/progulus/24/SteveM" name="tagframe4"

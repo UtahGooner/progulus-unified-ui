@@ -9,12 +9,6 @@ const TagBoardContainer:React.FC = () => {
 
     return (
         <div>
-            <div>
-                <a href="https://www.patreon.com/bePatron?u=50361285" target="_blank" rel="noopener"
-                   data-patreon-widget-type="become-patron-button">
-                    Become a Patron!
-                </a>
-            </div>
             <div dangerouslySetInnerHTML={{__html: content}} />
         </div>
     )

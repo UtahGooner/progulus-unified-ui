@@ -1,19 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Armata&family=Inconsolata&display=swap');
+@import "./bootstrap-init";
+
 
 
 body {
   font-family: "Armata", var(--bs-body-font-family);
 
+  @media (prefers-color-scheme: dark) {
+    color: #aaaaaa;
+    background-color: #000000;
+  }
+
   a {
     text-decoration: unset;
     &:hover {
       text-decoration: underline;
+      @media (prefers-color-scheme: dark) {
+        color: #a95ca6;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: #a95ca6;
+      &:hover {
+        color: #a95ca6;
+      }
     }
   }
   .mono {
     font-family: 'Inconsolata', monospace;
   }
 
+  header {
+    @import "./progulus-header";
+  }
+
+  .np--album-cover-container {
+    .progress {
+      @media (prefers-color-scheme: dark) {
+        background-color: #e9ecef38;
+      }
+    }
+  }
   .np--recent-song-list {
     display: flex;
     flex-direction: row;
@@ -49,20 +77,7 @@ body {
   }
 
 
-  #progulus--header-logo {
-    height: 180px;
-    background-image: url(/rprweb/images/progulus-logo-1.png);
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    @media (min-width: 560px) {
-      background-size: auto;
-    }
 
-    @at-root #progulus--header-logo-container {
-      margin-top: 66px;
-    }
-  }
 
   #progulus--main-body {
     margin-top: 66px;
@@ -76,6 +91,10 @@ body {
         justify-content: space-between;
       }
     }
+
+    @import "song-info";
+
+    @import "request-page";
   }
 
 

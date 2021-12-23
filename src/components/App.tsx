@@ -12,6 +12,8 @@ import HeaderLogo from "./HeaderLogo";
 import SubHeader from "./SubHeader";
 import TagBoardContainer from "./TagBoardContainer";
 import ArtistPage from "./ArtistPage";
+import RequestSearchFilter from "../ducks/requests/RequestSearchFilter";
+import RequestPage from "../ducks/requests/RequestPage";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
@@ -36,8 +38,10 @@ const App: React.FC = () => {
                                 <RecentSongs />
                             </ErrorBoundary>
                         </Route>
-                        <Route path="/request">
-                            <h2>Request page goes here.</h2>
+                        <Route path="/request/:section?">
+                            <ErrorBoundary>
+                                <RequestPage />
+                            </ErrorBoundary>
                         </Route>
                         <Route path="/history">
                             <h2>History goes here.</h2>

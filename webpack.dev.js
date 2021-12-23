@@ -17,17 +17,19 @@ const localProxy = {
 module.exports = merge(common, {
     mode: 'development',
     devServer: {
-        static: [path.join(__dirname, 'public')],
-        // hot: true,
+        static: {
+            directory: path.join(__dirname, 'public'),
+            watch: false,
+        },
+        hot: true,
         port: 8000,
         proxy: {
             '/api': {...localProxy},
             '/images/': {...localProxy},
             '/rprweb/': {...localProxy},
         },
-        historyApiFallback: {
-        },
-        liveReload: true,
+        historyApiFallback: true,
+        // liveReload: false,
         watchFiles: ['src/**/*']
     },
     devtool: 'source-map',

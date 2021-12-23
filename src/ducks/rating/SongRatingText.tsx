@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import numeral from "numeral";
 import {selectSongRating} from "./index";
 import {useSelector} from "react-redux";
+import BasicSongRating from "./BasicSongRating";
 
 
 export interface SongRatingTextProps {
@@ -19,10 +20,7 @@ const SongRatingText:React.FC<SongRatingTextProps> = ({songId, showVotes = false
 
     return (
         <div>
-            <div>
-                <span className="me-3">{numeral(rating.rating).format('0.0')}</span>
-                <small>({rating.votes} Vote{rating.votes === 1 ? '' : 's'})</small>
-            </div>
+            <BasicSongRating rating={rating.rating} votes={rating.votes} />
             {showDetail && (
                 <div></div>
             )}

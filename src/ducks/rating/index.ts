@@ -19,7 +19,7 @@ const defaultState:RatingState = {
     saving: false
 }
 
-export const selectSongRating = (id:number) => (state:RootState) => state.rating.list[id];
+export const selectSongRating = (id:number) => (state:RootState) => state.rating.list[id] ?? 0;
 export const selectUserSongRating = (id:number) => (state:RootState) => state.rating.list[id]?.rating?.userRating || 0;
 
 const listReducer = (state:SongRatingList = defaultState.list, action:RatingAction):SongRatingList => {

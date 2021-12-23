@@ -1,7 +1,5 @@
 import React, {useState} from "react";
 import {CurrentSong} from "../types";
-import './song-info.scss';
-import SongDuration from "./SongDuration";
 import ArtistLink from "./ArtistLink";
 import RatingSlider from "../ducks/rating/RatingSlider";
 import FlagIcon from "./FlagIcon";

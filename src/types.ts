@@ -18,8 +18,8 @@ export interface CurrentPlaylist {
 export interface BasicSong {
     id: number,
     artist: string,
-    album: string,
-    title: string,
+    album: string|null,
+    title: string|null,
     duration: number,
     picture: string,
     albumYear: string,
@@ -32,6 +32,8 @@ export interface BasicSong {
 }
 
 export interface CurrentSong extends BasicSong {
+    album: string,
+    title: string,
     requester: string,
     msgname: string,
     msg: string,
@@ -41,6 +43,16 @@ export interface CurrentSong extends BasicSong {
     listeners: number,
 }
 
+export interface SearchResult extends BasicSong {
+    queued: boolean,
+    recent: boolean,
+    plays: number,
+    songs: number,
+    albums: number|null,
+    userVotes: number,
+    genre: string,
+    track: number|null,
+}
 
 export interface BasicRating {
     votes: number,

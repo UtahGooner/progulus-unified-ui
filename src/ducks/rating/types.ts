@@ -3,11 +3,6 @@ import {ThunkAction} from "redux-thunk";
 import {RootState} from "../index";
 
 
-export interface RatingState {
-    list: SongRatingList,
-    loading: boolean,
-    saving: boolean,
-}
 
 export interface RatingAction extends StandardAction {
     payload?: {

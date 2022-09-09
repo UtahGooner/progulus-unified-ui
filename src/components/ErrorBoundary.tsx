@@ -1,7 +1,18 @@
-import React, {Component} from 'react';
+import React, {Component, ReactNode} from 'react';
+import Alert from "../ducks/alerts/Alert";
 
 
-export default class ErrorBoundary extends Component {
+export interface ErrorBoundaryProps {
+    children: ReactNode;
+}
+
+export interface ErrorBoundaryState {
+    hasError: boolean;
+    componentStack: string,
+    message: string,
+}
+
+export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
     state = {
         hasError: false,
@@ -13,7 +24,7 @@ export default class ErrorBoundary extends Component {
         return {hasError: true};
     }
 
-    componentDidCatch(error:Error, errorInfo:any) {
+    componentDidCatch(error: Error, errorInfo: any) {
         this.setState({componentStack: errorInfo.componentStack, message: error.message});
     }
 
@@ -23,7 +34,7 @@ export default class ErrorBoundary extends Component {
             return (
                 <>
                     <h1>Sorry! something went wrong!</h1>
-                    <div className="alert alert-danger">{message}</div>
+                    <Alert alert={{name: 'ErrorBoundary', message: '', count: 1, id: 0 }} />
                     <code className="pre">
                         <pre style={{whiteSpace: 'pre-wrap'}}>
                             {componentStack}

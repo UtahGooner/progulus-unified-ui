@@ -87,8 +87,8 @@ const RatingSlider: React.FC<RatingSliderProps> = ({songId, showSlider = false})
             <div className="si--user-rating me-3" onMouseEnter={() => setVisible(true)}
                  onMouseOut={() => setVisible(false)}
                  onClick={() => setClicked(!clicked)}>
-                {rated === 0 && (<span>Not Rated</span>)}
-                {rated > 0 && (<span>{numeral(rated).format('0.0')}</span>)}
+                {rating === 0 && (<span>Not Rated</span>)}
+                {rating > 0 && (<span>{numeral(rating).format('0.0')}</span>)}
             </div>
             <div className="si--user-rating-tool">
                 {(showSlider || clicked || visible) && (

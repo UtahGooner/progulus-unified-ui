@@ -1,10 +1,11 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import classNames from "classnames";
 
 export interface ProgressProps {
     width?: number,
     animated?: boolean,
     style?: object,
+    children?: ReactNode,
 }
 const Progress:React.FC<ProgressProps> = ({width = 1, animated, style= {}, children}) => {
     const className = {

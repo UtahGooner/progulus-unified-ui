@@ -7,7 +7,7 @@ import {fetchJSON} from "../../utils/fetch";
 export const cookiePrefix = 'phpbb3_3i246';
 
 export interface UserProfile {
-    user_id: number,
+    user_id: number|string,
     user_regdate: number,
     username: string,
     user_avatar: string,
@@ -56,7 +56,7 @@ const idReducer = (state:number = 0, action:UserAction):number => {
     switch (type) {
     case userFetchSucceeded:
         if (payload?.profile) {
-            return payload.profile.user_id;
+            return Number(payload.profile.user_id);
         }
         return 1;
     default:

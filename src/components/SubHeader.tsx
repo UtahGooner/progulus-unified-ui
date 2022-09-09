@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentSong, selectListenerCount} from "../ducks/playing";
-import {Route, Switch} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import SubHeaderNowPlaying from "../ducks/playing/SubHeaderNowPlaying";
 
 const SubHeader: React.FC = () => {
@@ -22,8 +22,8 @@ const SubHeader: React.FC = () => {
                 <div className="d-none d-md-block col-8 col-md-7 col-lg-8 col-xl-9">
                     <div>
                         <span className="me-3">Now playing:</span>
-                        <Switch>
-                            <Route path={["/", '/now-playing']} exact>
+                        <Routes>
+                            <Route path="/">
                                 Regular Schedule
                             </Route>
                             {currentSong?.artist && (
@@ -31,7 +31,7 @@ const SubHeader: React.FC = () => {
                                     <SubHeaderNowPlaying/>
                                 </Route>
                             )}
-                        </Switch>
+                        </Routes>
                     </div>
                 </div>
                 <div className="col-12 col-md-5 col-lg-4 col-xl-3">

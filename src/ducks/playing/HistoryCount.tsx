@@ -1,10 +1,11 @@
 import React, {ChangeEvent} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {selectHistoryCount} from "./index";
-import {historyCountChangedAction, loadCurrentAction} from "./actions";
+import {historyCountChangedAction, loadCurrentAction} from "./index";
+import {useAppDispatch} from "../../app/configureStore";
 
 const HistoryCount:React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const historyCount = useSelector(selectHistoryCount);
 
     const changeHandler = (ev:ChangeEvent<HTMLSelectElement>) => {

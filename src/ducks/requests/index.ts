@@ -1,416 +1,285 @@
-import {SearchResult} from "../../types";
-import {RequestAction} from "./types";
-import {sortAlbums, sortArtists} from "./sort";
-import {combineReducers} from "redux";
-import {
-    albumMatch,
-    albumPlusMatch,
-    artistMatch,
-    artistPlusMatch, requestFetchFiltersFailed, requestFetchFiltersRequested, requestFetchFiltersSucceeded,
-    requestFilterArtist, requestFilterSetCountry, requestFilterSetGenre, requestFilterSetRated, requestFilterSetRating,
-    requestFilterSetSearch, requestFilterSetYear,
-    requestFilterToggleAlbums,
-    requestFilterToggleArtists,
-    requestFilterToggleSongs,
-    requestsAlbumsSearchFailed,
-    requestsAlbumsSearchRequested,
-    requestsAlbumsSearchSucceeded,
-    requestsArtistsSearchFailed,
-    requestsArtistsSearchRequested,
-    requestsArtistsSearchSucceeded,
-    requestSearchSongsFailed,
-    requestSearchSongsRequested,
-    requestSearchSongsSucceeded,
-    requestSelectSong, requestSetPage, requestsFilterAlbum, songMatch, songPlusMatch
-} from "./actionTypes";
+import {SearchDefaultsResponse, SearchProps, SearchResult} from "../../types";
+import {createAction, createAsyncThunk, createReducer, createSelector} from "@reduxjs/toolkit";
+import {fetchSearch, fetchSearchDefaults} from "../../api/songs";
+import Debug from 'debug';
+import {RootState} from "../../app/configureStore";
+import {sortAlbums, sortArtists, sortSongs} from "./sort";
 
-const currentPageReducer = (state:string = 'artists', action: RequestAction):string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestSetPage:
-        return payload?.value ?? 'artists';
-    default: return state;
-    }
+const debug = Debug('progulus:requests');
+
+export interface RequestFilterSection {
+    list?: string[];
+    loading?: boolean;
+    current: string;
 }
 
-const selectedSongReducer = (state: SearchResult | null = null, action: RequestAction): SearchResult | null => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestSelectSong:
-        return payload?.song || null;
-    default:
-        return state;
-    }
+export interface RequestResponseSection {
+    list?: SearchResult[];
+    loading?: boolean;
+    current: SearchResult | null;
+    filter: string;
 }
 
-const filterArtistsReducer = (state: boolean = true, action: RequestAction): boolean => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterToggleArtists:
-        if (payload?.toggle !== undefined) {
-            return payload.toggle;
-        }
-        return !state;
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (/in:/i.test(payload.search)) {
-                return /in:[\S]*artist/i.test(payload.search);
+export interface RequestsState {
+    currentPage: string;
+    search: string,
+    genre: RequestFilterSection;
+    year: RequestFilterSection;
+    country: RequestFilterSection;
+    artists: RequestResponseSection;
+    albums: RequestResponseSection;
+    songs: RequestResponseSection;
+    rating: RequestFilterSection;
+    rated: RequestFilterSection;
+}
+
+export const defaultFilterSection: RequestFilterSection = {
+    list: [],
+    loading: false,
+    current: '',
+}
+export const defaultResponseSection: RequestResponseSection = {
+    list: [],
+    loading: false,
+    current: null,
+    filter: '',
+}
+
+export const defaultState: RequestsState = {
+    currentPage: 'artists',
+    search: '',
+    genre: {...defaultFilterSection},
+    year: {...defaultFilterSection},
+    country: {...defaultFilterSection},
+    rating: {...defaultFilterSection},
+    rated: {...defaultFilterSection},
+    artists: {...defaultResponseSection},
+    albums: {...defaultResponseSection},
+    songs: {...defaultResponseSection},
+}
+
+export const setPage = createAction<string>('requests/setPage');
+export const setSearch = createAction<string>('requests/setSearch');
+export const setCurrentGenre = createAction<string>('requests/genre/setSearch');
+export const setCurrentYear = createAction<string>('requests/year/setSearch');
+export const setCurrentCountry = createAction<string>('requests/country/setSearch');
+export const setCurrentRating = createAction<string>('requests/rating/setSearch');
+export const setCurrentRated = createAction<string>('requests/rated/setSearch');
+export const setArtistSearch = createAction<string>('requests/artists/setSearch');
+export const setAlbumSearch = createAction<string>('requests/albums/setSearch');
+export const setSongSearch = createAction<string>('requests/songs/setSearch');
+
+const loadDefaultsPrefix = 'requests/default/load';
+const loadArtistsPrefix = 'requests/artists/load';
+const loadAlbumsPrefix = 'requests/albums/load';
+const loadSongsPrefix = 'requests/songs/load';
+
+export const loadSearchDefaults = createAsyncThunk(
+    loadDefaultsPrefix,
+    async (arg: void, thunkAPI): Promise<SearchDefaultsResponse | null> => {
+        try {
+            return await fetchSearchDefaults();
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                debug("loadSearchDefaults()", err.message);
+                thunkAPI.rejectWithValue({error: err, context: loadDefaultsPrefix});
+                return null;
             }
+            debug("loadSearchDefaults()", err);
+            return {countries: [], genres: [], years: []}
         }
-        return state;
-    default:
-        return state;
-    }
-}
 
-const filterArtistReducer = (state:string = '', action:RequestAction): string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterArtist:
-        return payload?.value || '';
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (artistPlusMatch.test(payload.search)) {
-                const match = artistPlusMatch.exec(payload.search);
-                console.log('filterArtistReducer() artistPlusMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
-            } else if (artistMatch.test(payload.search)) {
-                const match = artistMatch.exec(payload.search);
-                console.log('filterArtistReducer() artistMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
+    }
+)
+
+export const loadArtists = createAsyncThunk(
+    loadArtistsPrefix,
+    async (arg: Partial<SearchProps>, thunkAPI): Promise<SearchResult[]> => {
+        try {
+            const artists = await fetchSearch({...arg, for: 'artists'});
+            if (arg.followSingleResult && artists.length === 1) {
+                thunkAPI.dispatch(loadAlbums({...arg, artist: artists[0].artist}))
             }
-        }
-        return state;
-    default: return state;
-    }
-}
-
-const filterAlbumReducer = (state:string = '', action:RequestAction): string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestsFilterAlbum:
-        return payload?.value || '';
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (albumPlusMatch.test(payload.search)) {
-                const match = albumPlusMatch.exec(payload.search);
-                console.log('filterAlbumReducer() albumPlusMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
-            } else if (albumMatch.test(payload.search)) {
-                const match = albumMatch.exec(payload.search);
-                console.log('filterAlbumReducer() albumMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
+            return artists;
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                debug("loadSearchDefaults()", err.message);
+                thunkAPI.rejectWithValue({error: err, context: loadDefaultsPrefix});
+                return [];
             }
+            debug("loadSearchDefaults()", err);
+            return [];
         }
-        return state;
-    default: return state;
     }
-}
+)
 
-const filterSongReducer = (state:string = '', action:RequestAction): string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterArtist:
-        return payload?.value || '';
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (songPlusMatch.test(payload.search)) {
-                const match = songPlusMatch.exec(payload.search);
-                console.log('filterSongReducer() songPlusMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
-            } else if (songMatch.test(payload.search)) {
-                const match = songMatch.exec(payload.search);
-                console.log('filterSongReducer() songMatch', match);
-                if (match && match[1]) {
-                    return match[1];
-                }
+export const loadAlbums = createAsyncThunk(
+    loadAlbumsPrefix,
+    async (arg: Partial<SearchProps>, thunkAPI): Promise<SearchResult[]> => {
+        try {
+            const albums = await fetchSearch({...arg, for: 'albums'});
+            if (arg.followSingleResult && albums.length === 1) {
+                thunkAPI.dispatch(loadSongs({...arg, artist: albums[0].artist, album: albums[0].album}));
             }
-        }
-        return state;
-    default: return state;
-    }
-}
-
-const filterAlbumsReducer = (state: boolean = true, action: RequestAction): boolean => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterToggleAlbums:
-        if (payload?.toggle !== undefined) {
-            return payload.toggle;
-        }
-        return !state;
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (/in:/i.test(payload.search)) {
-                return /in:[\S]*album/i.test(payload.search);
+            return  albums;
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                debug("loadSearchDefaults()", err.message);
+                thunkAPI.rejectWithValue({error: err, context: loadDefaultsPrefix});
+                return [];
             }
+            debug("loadSearchDefaults()", err);
+            return [];
         }
-        return state;
-    default:
-        return state;
     }
-}
+)
 
-const filterSongsReducer = (state: boolean = true, action: RequestAction): boolean => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterToggleSongs:
-        if (payload?.toggle !== undefined) {
-            return payload.toggle;
-        }
-        return !state;
-    case requestFilterSetSearch:
-        if (payload?.search) {
-            if (/in:/i.test(payload.search)) {
-                return /in:[\S]*song/i.test(payload.search);
+export const loadSongs = createAsyncThunk(
+    loadSongsPrefix,
+    async (arg: Partial<SearchProps>, thunkAPI): Promise<SearchResult[]> => {
+        try {
+            const state = thunkAPI.getState();
+
+            return await fetchSearch({...arg, for: 'songs'});
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                debug("loadSearchDefaults()", err.message);
+                thunkAPI.rejectWithValue({error: err, context: loadDefaultsPrefix});
+                return [];
             }
+            debug("loadSearchDefaults()", err);
+            return [];
         }
-        return state;
-    default:
-        return state;
     }
-}
+)
 
+/* SELECTORS ************************************/
 
-const filterSearchReducer = (state: string = '', action: RequestAction): string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetSearch:
-        return payload?.search || '';
-    default:
-        return state;
+export const selectCurrentPage = (state:RootState) => state.requests.currentPage;
+export const selectSelectedSong = (state:RootState) => state.requests.songs.current;
+
+export const selectFilterArtist = (state:RootState):string => state.requests.artists.filter;
+export const selectFilterAlbum = (state:RootState):string => state.requests.albums.filter;
+export const selectFilterSong = (state:RootState):string => state.requests.songs.filter;
+
+export const selectFilterSearch = (state:RootState) => state.requests.search;
+export const selectFilterGenre = (state:RootState) => state.requests.genre.current;
+export const selectFilterYear = (state:RootState) => state.requests.year.current;
+export const selectFilterRating = (state:RootState) => state.requests.rating.current;
+export const selectFilterRated = (state:RootState) => state.requests.rated.current;
+export const selectFilterCountry = (state:RootState) => state.requests.country.current;
+
+export const selectArtistsList = (state:RootState) => state.requests.artists.list ?? [];
+export const selectArtistsCount = (state:RootState) => state.requests.artists.list?.length ?? 0;
+export const selectArtistsLoading = (state:RootState) => state.requests.artists.loading ?? false;
+export const selectAlbumsList = (state:RootState) => state.requests.albums.list ?? [];
+export const selectAlbumsCount = (state:RootState) => state.requests.albums.list?.length ?? 0;
+export const selectAlbumsLoading = (state:RootState) => state.requests.albums.loading ?? false;
+export const selectSongsList = (state:RootState) => state.requests.songs.list ?? [];
+export const selectSongsCount = (state:RootState) => state.requests.songs.list?.length ?? 0;
+export const selectSongsLoading = (state:RootState) => state.requests.songs.loading ?? false;
+
+export const selectGenresList = (state:RootState) => state.requests.genre.list ?? [];
+export const selectCountryList = (state:RootState) => state.requests.country.list ?? [];
+export const selectYearList = (state:RootState) => state.requests.year.list ?? [];
+export const selectFiltersLoading = (state:RootState) => state.requests.genre.loading ?? false;
+
+export const selectSearchParams = createSelector(
+    [selectFilterArtist, selectFilterAlbum, selectFilterSong, selectFilterGenre,
+        selectFilterRated, selectFilterRating, selectFilterYear, selectFilterCountry, selectFilterSearch],
+    (artist, album, song, genre, rated, rating, year, country, search) => {
+        return {
+            artist,
+            album,
+            song,
+            genre,
+            rated,
+            rating,
+            year,
+            country,
+            search
+        } as Partial<SearchProps>;
     }
-}
+)
 
-const filterYearReducer = (state:string = '', action:RequestAction):string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetYear:
-        return payload?.value || '';
-    default:
-        return state;
-    }
-}
-
-const filterCountryReducer = (state:string = '', action:RequestAction):string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetCountry:
-        return payload?.value || '';
-    default:
-        return state;
-    }
-}
-
-const filterRatedReducer = (state:number|null = null, action:RequestAction):number|null => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetRated:
-        if (payload?.rate !== undefined) {
-            return payload.rate === null ? null : payload.rate;
-        }
-        return null;
-    default:
-        return state;
-    }
-}
-
-const filterRatingReducer = (state:number|null = null, action:RequestAction):number|null => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetRating:
-        if (payload?.rate !== undefined) {
-            return payload.rate === null ? null : payload.rate;
-        }
-        return null;
-    default:
-        return state;
-    }
-}
-
-const filterGenreReducer = (state:string = '', action:RequestAction):string => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFilterSetGenre:
-        return payload?.value || '';
-    default:
-        return state;
-    }
-}
-
-const filterGenreListReducer = (state: string[] = [], action: RequestAction): string[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFetchFiltersSucceeded:
-        if (payload?.filters) {
-            return payload.filters.genres.sort();
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const filterYearsListReducer = (state: string[] = [], action: RequestAction): string[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFetchFiltersSucceeded:
-        if (payload?.filters) {
-            return payload.filters.years.sort().reverse();
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const filterCountryListReducer = (state: string[] = [], action: RequestAction): string[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestFetchFiltersSucceeded:
-        if (payload?.filters) {
-            return payload.filters.countries.sort();
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const filtersLoadingReducer = (state: boolean = false, action: RequestAction): boolean => {
-    const {type} = action;
-    switch (type) {
-    case requestFetchFiltersRequested:
-        return true;
-    case requestFetchFiltersSucceeded:
-    case requestFetchFiltersFailed:
-        return false;
-    default:
-        return state;
-    }
-}
-
-
-const filterReducer = combineReducers({
-    artist: filterArtistReducer,
-    album: filterAlbumReducer,
-    song: filterSongReducer,
-    artists: filterArtistsReducer,
-    albums: filterAlbumsReducer,
-    songs: filterSongsReducer,
-    genre: filterGenreReducer,
-    year: filterYearReducer,
-    country: filterCountryReducer,
-    rated: filterRatedReducer,
-    rating: filterRatingReducer,
-    search: filterSearchReducer,
-    genreList: filterGenreListReducer,
-    yearList: filterYearsListReducer,
-    countryList: filterCountryListReducer,
-    loading: filtersLoadingReducer,
-})
-
-const artistsListReducer = (state: SearchResult[] = [], action: RequestAction): SearchResult[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestsArtistsSearchSucceeded:
-        if (payload?.list) {
-            return payload.list.sort(sortArtists);
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const artistsLoadingReducer = (state: boolean = false, action: RequestAction): boolean => {
-    const {type} = action;
-    switch (type) {
-    case requestsArtistsSearchRequested:
-        return true;
-    case requestsArtistsSearchSucceeded:
-    case requestsArtistsSearchFailed:
-        return false;
-    default:
-        return state;
-    }
-}
-
-const artistsReducer = combineReducers({list: artistsListReducer, loading: artistsLoadingReducer});
-
-const albumsListReducer = (state: SearchResult[] = [], action: RequestAction): SearchResult[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestsAlbumsSearchSucceeded:
-        if (payload?.list) {
-            return payload.list.sort(sortAlbums);
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const albumsLoadingReducer = (state: boolean = false, action: RequestAction): boolean => {
-    const {type} = action;
-    switch (type) {
-    case requestsAlbumsSearchRequested:
-        return true;
-    case requestsAlbumsSearchSucceeded:
-    case requestsAlbumsSearchFailed:
-        return false;
-    default:
-        return state;
-    }
-}
-
-const albumsReducer = combineReducers({list: albumsListReducer, loading: albumsLoadingReducer});
-
-const songsListReducer = (state: SearchResult[] = [], action: RequestAction): SearchResult[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case requestSearchSongsSucceeded:
-        if (payload?.list) {
-            return payload.list.sort(sortArtists);
-        }
-        return [];
-    default:
-        return state;
-    }
-}
-
-const songsLoadingReducer = (state: boolean = false, action: RequestAction): boolean => {
-    const {type} = action;
-    switch (type) {
-    case requestSearchSongsRequested:
-        return true;
-    case requestSearchSongsSucceeded:
-    case requestSearchSongsFailed:
-        return false;
-    default:
-        return state;
-    }
-}
-
-const songsReducer = combineReducers({list: songsListReducer, loading: songsLoadingReducer});
-
-
-
-export default combineReducers({
-    currentPage: currentPageReducer,
-    selectedSong: selectedSongReducer,
-    filter: filterReducer,
-    artists: artistsReducer,
-    albums: albumsReducer,
-    songs: songsReducer,
+/* REDUCER ***************************************/
+const requestsReducer = createReducer(defaultState, (builder) => {
+    builder
+        .addCase(setPage, (state, action) => {
+            state.currentPage = action.payload;
+        })
+        .addCase(setArtistSearch, (state, action) => {
+            state.artists.filter = action.payload;
+        })
+        .addCase(setAlbumSearch, (state, action) => {
+            state.albums.filter = action.payload;
+        })
+        .addCase(setSongSearch, (state, action) => {
+            state.songs.filter = action.payload;
+        })
+        .addCase(setCurrentGenre, (state, action) => {
+            state.genre.current = action.payload;
+        })
+        .addCase(setCurrentCountry, (state, action) => {
+            state.country.current = action.payload;
+        })
+        .addCase(setCurrentYear, (state, action) => {
+            state.year.current = action.payload;
+        })
+        .addCase(setCurrentRated, (state, action) => {
+            state.rated.current = action.payload;
+        })
+        .addCase(setCurrentRating, (state, action) => {
+            state.rating.current = action.payload;
+        })
+        .addCase(loadSearchDefaults.pending, (state, action) => {
+            state.genre.loading = true;
+            state.year.loading = true;
+            state.country.loading = true;
+        })
+        .addCase(loadSearchDefaults.rejected, (state, action) => {
+            state.genre.loading = false;
+            state.year.loading = false;
+            state.country.loading = false;
+        })
+        .addCase(loadSearchDefaults.fulfilled, (state, action) => {
+            state.genre.loading = false;
+            state.genre.list = action.payload?.genres || [];
+            state.year.loading = false;
+            state.year.list = action.payload?.years || [];
+            state.country.loading = false;
+            state.country.list = action.payload?.countries || [];
+        })
+        .addCase(loadArtists.pending, (state) => {
+            state.artists.loading = true;
+        })
+        .addCase(loadArtists.rejected, (state) => {
+            state.artists.loading = false;
+        })
+        .addCase(loadArtists.fulfilled, (state, action) => {
+            state.artists.loading = false;
+            state.artists.list = action.payload.sort(sortArtists);
+        })
+        .addCase(loadAlbums.pending, (state) => {
+            state.albums.loading = true;
+        })
+        .addCase(loadAlbums.rejected, (state) => {
+            state.albums.loading = false;
+        })
+        .addCase(loadAlbums.fulfilled, (state, action) => {
+            state.albums.loading = false;
+            state.albums.list = action.payload.sort(sortAlbums);
+        })
+        .addCase(loadSongs.pending, (state) => {
+            state.songs.loading = true;
+        })
+        .addCase(loadSongs.rejected, (state) => {
+            state.songs.loading = false;
+        })
+        .addCase(loadSongs.fulfilled, (state, action) => {
+            state.songs.loading = false;
+            state.songs.list = action.payload.sort(sortSongs);
+        })
 });
+
+export default requestsReducer;

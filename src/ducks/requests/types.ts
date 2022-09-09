@@ -20,7 +20,3 @@ export interface RequestAction extends StandardAction {
 
 export interface RequestThunkAction extends ThunkAction<any, RootState, unknown, RequestAction> {}
 
-export interface SearchSorterProps {
-    field: keyof SearchResult,
-    ascending: boolean,
-}

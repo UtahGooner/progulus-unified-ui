@@ -1,18 +1,14 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {selectQueue} from "./index";
-import {loadCurrentAction} from "./actions";
+import {useSelector} from "react-redux";
+import {loadCurrentAction, selectQueue} from "./index";
 import Duration from "../../components/Duration";
 import "./now-playing.scss";
-import ArtistLink from "../../components/ArtistLink";
-import AlbumCover from "../../components/AlbumCover";
 import QueuedArtist from "./QueuedArtist";
+import {useAppDispatch} from "../../app/configureStore";
 
 
-
-
-const Queue:React.FC = () => {
-    const dispatch = useDispatch();
+const Queue: React.FC = () => {
+    const dispatch = useAppDispatch();
     const queue = useSelector(selectQueue);
     const [nextPicture] = queue.map(song => song.picture);
 
@@ -27,14 +23,14 @@ const Queue:React.FC = () => {
         dispatch(loadCurrentAction());
     }
 
-    const duration = queue.reduce((d, cv) => d + cv.duration , 0);
+    const duration = queue.reduce((d, cv) => d + cv.duration, 0);
 
     return (
         <div className="progulus--queue d-block d-flex-md">
             <div className="progulus--queue-title">
                 <h3 onClick={clickHandler} className="me-3">Coming up:</h3>
                 <h3 onClick={clickHandler} className="me-3">
-                    <Duration duration={duration} />
+                    <Duration duration={duration}/>
                 </h3>
             </div>
             <div className="progulus--queue-list">
@@ -43,7 +39,7 @@ const Queue:React.FC = () => {
                     .map((song, index) => (
                         <QueuedArtist key={song.id} artist={song.artist} requester={song.requester}
                                       prevArtist={queue[index - 1] ? queue[index - 1].artist : undefined}
-                                      nextArtist={queue[index + 1] ? queue[index + 1].artist : undefined} />
+                                      nextArtist={queue[index + 1] ? queue[index + 1].artist : undefined}/>
                     ))}
             </div>
         </div>

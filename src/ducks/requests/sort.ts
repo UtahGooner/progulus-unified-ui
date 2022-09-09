@@ -1,5 +1,4 @@
-import {SearchSorterProps} from "./types";
-import {SearchResult} from "../../types";
+import {SearchResult, SearchSorterProps} from "../../types";
 
 export const defaultArtistSortProps:SearchSorterProps = {field: 'artist', ascending: true};
 

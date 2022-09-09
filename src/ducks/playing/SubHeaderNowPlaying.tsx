@@ -1,13 +1,13 @@
 import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {selectCurrentSong, selectLoading} from "./index";
-import {loadCurrentAction} from "./actions";
+import {useSelector} from "react-redux";
+import {loadCurrentAction, selectCurrentSong, selectLoading} from "./index";
 import './now-playing.scss';
 import ArtistLink from "../../components/ArtistLink";
+import {useAppDispatch} from "../../app/configureStore";
 
 const SubHeaderNowPlaying: React.FC = () => {
     let timerHandle: number;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentSong = useSelector(selectCurrentSong);
     const loading = useSelector(selectLoading);
 

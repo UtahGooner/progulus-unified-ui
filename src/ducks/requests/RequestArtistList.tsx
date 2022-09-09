@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {selectArtistsList} from "./selectors";
+import {selectArtistsList} from "./index";
 import RequestArtist from "./RequestArtist";
 
 const RequestArtistList: React.FC = () => {

@@ -1,6 +1,6 @@
 import {RatingThunkAction} from "./types";
 import {loadRatingFailed, saveRatingFailed, saveRatingRequested, saveRatingSucceeded} from "./index";
-import {loadCurrentRequested, loadCurrentSucceeded} from "../playing";
+// import {loadCurrentRequested, loadCurrentSucceeded} from "../playing";
 import {fetchJSON} from "../../utils/fetch";
 import {BasicRating, SongRating, UserRating} from "../../types";
 import {selectUserId} from "../user";
@@ -11,9 +11,9 @@ const rateURL = '/api/rating/rate.php';
 export const loadRatingAction = (songID: number): RatingThunkAction =>
     async (dispatch, getState) => {
         try {
-            dispatch({type: loadCurrentRequested, payload: {songID}});
+            // dispatch({type: loadCurrentRequested, payload: {songID}});
             const rating: SongRating = await fetchJSON(ratingURL(songID));
-            dispatch({type: loadCurrentSucceeded, payload: {rating}});
+            // dispatch({type: loadCurrentSucceeded, payload: {rating}});
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.log("loadRatingAction()", error.message);

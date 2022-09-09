@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCurrentSong, selectLoading} from "./index";
-import {loadCurrentAction} from "./actions";
+import {loadCurrentAction, selectCurrentSong, selectLoading} from "./index";
+import {useAppDispatch} from "../../app/configureStore";
 
 
 const calcProgress = (now: number, startTime: number, endTime: number) => ((now - startTime) / (endTime - startTime));
 
-const calcTime = (value: number, showHours:boolean = false) => {
+const calcTime = (value: number, showHours: boolean = false) => {
     const minutes = Math.floor(value / 60000);
     const seconds = Math.floor((value % 60000) / 1000);
     return String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
@@ -20,10 +20,10 @@ export interface NowPlayingProgressProps {
     on100pct: () => void,
 }
 
-const NowPlayingProgress:React.FC = () => {
+const NowPlayingProgress: React.FC = () => {
     let timerHandle: number = 0;
     let timeoutHandle: number = 0;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const loading = useSelector(selectLoading);
     const currentSong = useSelector(selectCurrentSong);
@@ -76,7 +76,10 @@ const NowPlayingProgress:React.FC = () => {
         <div className="row g-3 align-items-baseline">
             <div className="col">
                 <div className="progress">
-                    <div className={classNames("progress-bar", {'progress-bar-striped': loading, 'progress-bar-animated': loading})}
+                    <div className={classNames("progress-bar", {
+                        'progress-bar-striped': loading,
+                        'progress-bar-animated': loading
+                    })}
                          style={style} title={calcTime(duration * progress)}>
                         <span className="visually-hidden">{calcTime(duration * progress)}</span>
                     </div>

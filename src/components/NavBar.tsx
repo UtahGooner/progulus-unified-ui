@@ -3,11 +3,13 @@ import {NavLink} from 'react-router-dom';
 import HideOnScroll from "./HideOnScroll";
 import classNames from "classnames";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProfileAction, selectUserAvatar, selectUserName} from "../ducks/user";
+import {fetchProfileAction, selectUserAvatar, selectUserId, selectUserName} from "../ducks/user";
+import {useAppDispatch} from "../app/configureStore";
 
 const NavBar: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [show, setShow] = useState(false);
+    const userId = useSelector(selectUserId);
     const userName = useSelector(selectUserName);
     const userAvatar = useSelector(selectUserAvatar);
 
@@ -19,7 +21,6 @@ const NavBar: React.FC = () => {
         setShow(!show);
     }
     const navbarClassName = classNames('navbar-collapse', {collapse: true, show: show})
-
 
     return (
         <HideOnScroll>
@@ -52,22 +53,29 @@ const NavBar: React.FC = () => {
                         </ul>
                     </div>
                     <div className="d-flex">
-                        {!!userAvatar && (
-                            <div className="me-1">
-                                <img src={`/phpBB3/download/file.php?avatar=${encodeURIComponent(userAvatar)}`}
-                                     alt={userName} loading="lazy" style={{maxHeight: '40px', width: 'auto'}}/>
-                            </div>
-                        )}
-                        {!userAvatar && (
-                            <div className="bi-person-bounding-box me-1"/>
-                        )}
-                        <div className="d-none d-md-block">{userName}</div>
+                        <ul className="navbar-nav me-auto">
+                            <li className="nav-item d-none d-md-block">
+                                {!!userAvatar && (
+                                    <div className="me-1 nav-link">
+                                        <img src={`/phpBB3/download/file.php?avatar=${encodeURIComponent(userAvatar)}`}
+                                             alt={userName} loading="lazy" style={{maxHeight: '40px', width: 'auto'}}/>
+                                    </div>
+                                )}
+                                {!userAvatar && (
+                                    <div className="bi-person-bounding-box me-1 nav-link"/>
+                                )}
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/login" className="nav-link">{userId === 1 ? 'Login' : userName}</NavLink>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </HideOnScroll>
     )
 }
+
 
 export default NavBar;
 

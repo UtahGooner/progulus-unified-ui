@@ -3,9 +3,9 @@ const jsonHeaders = {
     'Content-Type': 'application/json',
 };
 
-async function handleJSONResponse(res:Response) {
+async function handleJSONResponse<T = any>(res:Response):Promise<T> {
     if (!res.ok) {
-        const text = await res.text();
+        const text = await res.text() || `${res.status}; ${res.statusText}`;
         return Promise.reject(new Error(text));
     }
     const json = await res.json();
@@ -13,10 +13,10 @@ async function handleJSONResponse(res:Response) {
         console.warn(json.error);
         return Promise.reject(new Error(json.error));
     }
-    return json;
+    return json || {};
 }
 
-export async function fetchJSON(url:string, options:RequestInit = {}, body?:object|BodyInit) {
+export async function fetchJSON<T = any>(url:string, options:RequestInit = {}, body?:object|BodyInit):Promise<T> {
     try {
         const headers = options.headers || {};
         const contentTypeHeaders = typeof body === 'object' ? jsonHeaders : {};
@@ -40,7 +40,7 @@ export async function fetchJSON(url:string, options:RequestInit = {}, body?:obje
     }
 }
 
-export async function fetchHTML(url:string, options: RequestInit = {}) {
+export async function fetchHTML(url:string, options: RequestInit = {}):Promise<string> {
     try {
         const res = await fetch(url, {credentials: 'same-origin', ...options});
         if (!res.ok) {

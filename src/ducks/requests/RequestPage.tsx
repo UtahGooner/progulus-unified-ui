@@ -1,34 +1,35 @@
 import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchSearchFiltersAction, setPageAction} from "./actions";
+import {useSelector} from "react-redux";
+
 import RequestSearchFilter from "./RequestSearchFilter";
-import {selectAlbumsCount, selectArtistsCount, selectCurrentPage, selectSongsCount} from "./selectors";
+import {loadSearchDefaults, selectCurrentPage, setPage} from "./index";
 import RequestPageTabs from "./RequestPageTabs";
-import {Route, useHistory, useLocation, useParams} from "react-router-dom";
+import {Route, useNavigate, useParams} from "react-router-dom";
 import RequestArtistList from "./RequestArtistList";
 import RequestAlbumList from "./RequestAlbumList";
+import {useAppDispatch} from "../../app/configureStore";
 
 interface ParamsType {
     section?: string,
 }
 
 const RequestPage: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentPage = useSelector(selectCurrentPage);
-    const history = useHistory();
-    const params = useParams<ParamsType>();
+    const navigate = useNavigate();
+    const params = useParams();
     console.log(params);
 
     useEffect(() => {
         if (!params.section) {
-            history.push(`/request/${currentPage}`);
+            navigate(`/request/${currentPage}`);
         } else if (params.section !== currentPage) {
-            dispatch(setPageAction(params.section));
+            dispatch(setPage(params.section));
         }
     }, [params.section]);
 
     useEffect(() => {
-        dispatch(fetchSearchFiltersAction())
+        dispatch(loadSearchDefaults())
     }, [])
     return (
         <div className="progulus--request">
@@ -36,10 +37,10 @@ const RequestPage: React.FC = () => {
             <RequestSearchFilter/>
             <RequestPageTabs/>
             <Route path="/request/artists">
-                <RequestArtistList />
+                <RequestArtistList/>
             </Route>
             <Route path="/request/albums">
-                <RequestAlbumList />
+                <RequestAlbumList/>
             </Route>
         </div>
     )

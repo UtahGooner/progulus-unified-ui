@@ -1,14 +1,14 @@
 import React, {ChangeEvent} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {selectFilterRated} from "./selectors";
-import {selectRatedAction} from "./actions";
+import {selectFilterRated, setCurrentRated} from "./index";
+
 
 const RatedInput: React.FC = () => {
     const dispatch = useDispatch();
     const rated = useSelector(selectFilterRated);
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        dispatch(selectRatedAction(ev.target.valueAsNumber));
+        dispatch(setCurrentRated(ev.target.value));
     }
 
     return (

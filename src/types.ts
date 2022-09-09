@@ -1,5 +1,9 @@
 import {Action} from "redux";
 
+export interface RejectWithError {
+    error: Error;
+    context?: string;
+}
 export interface StandardAction extends Action {
     type: string,
     payload?: string|number|object,
@@ -70,5 +74,63 @@ export interface SongRating {
 }
 
 export interface SongRatingList {
-    [key:number]: SongRating,
+    [key:number]: {
+        rating: SongRating,
+        loading: boolean,
+        saving: boolean,
+    },
+}
+
+export interface SaveRatingProps {
+    songID: number,
+    rating: number,
+}
+
+export interface SearchSorterProps {
+    field: keyof SearchResult,
+    ascending: boolean,
+}
+
+export interface SearchProps {
+    for: SearchType;
+    artist?: string|null;
+    album?: string|null;
+    song?: string|null;
+    genre?: string|null;
+    rated?: string | number | number[] | null;
+    rating?: string | number | number[] | null;
+    year?: string|null;
+    country?: string|null;
+    search?: string|null;
+    followSingleResult?:boolean
+}
+
+export type SearchType = 'artists'|'albums'|'songs';
+
+export interface SearchResponse {
+    search: {
+        responseType: SearchType,
+        for: SearchType,
+        userID: string,
+        artist: string|null;
+        album: string|null;
+        country: string|null;
+        title: string|null;
+        genre: string|null;
+        year: string|null;
+        rated: number[];
+        rating: number[];
+        since: number|null;
+        albums?: number|null;
+        search?:string|null;
+    },
+    artists?: SearchResult[]
+    albums?: SearchResult[]
+    songs?: SearchResult[]
+}
+
+export interface SearchDefaultsResponse {
+    genres: string[];
+    years: string[];
+    countries: string[];
 }

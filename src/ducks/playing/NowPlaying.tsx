@@ -1,20 +1,22 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectCurrentSong, selectLoading} from "./index";
-import {loadCurrentAction} from "./actions";
+import {loadCurrentAction, selectCurrentSong, selectLoading} from "./index";
 import AlbumCover from "../../components/AlbumCover";
 import SongInfo from "../../components/SongInfo";
 import Progress from "../../components/Progress";
 import './now-playing.scss';
 import SongDuration from "../../components/SongDuration";
 import classNames from "classnames";
+import {useAppDispatch} from "../../app/configureStore";
 
 
 const calcProgress = (now: number, startTime: number, endTime: number) => endTime === startTime ? 0 : ((now - startTime) / (endTime - startTime));
 
 const NowPlaying: React.FC = () => {
-    let timerHandle: number;
-    const dispatch = useDispatch();
+    // const
+    const [timerHandle, setTimerHandle] = useState(0);
+
+    const dispatch = useAppDispatch();
     const currentSong = useSelector(selectCurrentSong);
     const loading = useSelector(selectLoading);
 
@@ -26,7 +28,7 @@ const NowPlaying: React.FC = () => {
 
     useEffect(() => {
         if (!timerHandle) {
-            timerHandle = window.setInterval(() => {
+            const timerHandle = window.setInterval(() => {
                 if (loading) {
                     return;
                 }
@@ -41,14 +43,15 @@ const NowPlaying: React.FC = () => {
                     }
                 }
             }, 1000);
+            setTimerHandle(() => timerHandle);
         }
-        document.querySelectorAll('#progulus--listeners')
-            .forEach((el) => {
-                el.innerHTML = (currentSong?.listeners || '-').toString();
-            })
-        return () => {
-            window.clearInterval(timerHandle);
-        }
+        // document.querySelectorAll('#progulus--listeners')
+        //     .forEach((el) => {
+        //         el.innerHTML = (currentSong?.listeners || '-').toString();
+        //     })
+        // return () => {
+        //     window.clearInterval(timerHandle);
+        // }
     }, [currentSong?.id]);
 
     if (!currentSong && loading) {
@@ -74,7 +77,7 @@ const NowPlaying: React.FC = () => {
                     </div>
                 </div>
                 <div className={classNames("col-12 col-md-6 np--song-info", {zoomed: zoomed})}>
-                    <SongInfo song={currentSong} />
+                    <SongInfo song={currentSong}/>
                 </div>
             </div>
         </div>

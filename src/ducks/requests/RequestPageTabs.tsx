@@ -6,7 +6,7 @@ import {
     selectArtistsCount, selectArtistsLoading,
     selectSongsCount,
     selectSongsLoading
-} from "./selectors";
+} from "./index";
 import {NavLink} from "react-router-dom";
 import {AlbumIcon, ArtistIcon, SongIcon} from "../../components/Icons";
 import LoadingSpinner from "./LoadingSpinner";

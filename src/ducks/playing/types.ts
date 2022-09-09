@@ -8,7 +8,8 @@ export interface PlayingState {
     current: CurrentSong | null,
     history: CurrentSong[],
     queue: CurrentSong[],
-    loading:false,
+    loading:boolean,
+    count: number
 }
 
 export interface PlayingAction extends StandardAction {

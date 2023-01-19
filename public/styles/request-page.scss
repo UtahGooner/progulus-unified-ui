@@ -1,22 +1,35 @@
 .progulus--request {
   &-artist-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
 
-    .artist {
-      padding: 0.5rem;
-      text-align: center;
-      flex: 0 0 25%;
 
-      .song-info {
-        visibility: hidden;
+    &.display--grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .album-cover--container {
+        min-height: 250px;
       }
+      .artist {
+        padding: 0.5rem;
+        text-align: center;
+        flex: 0 0 25%;
 
-      &:hover {
         .song-info {
-          visibility: visible;
+          visibility: hidden;
         }
+
+        &:hover {
+          .song-info {
+            visibility: visible;
+          }
+        }
+      }
+    }
+
+    &.display--list {
+      columns: 4 250px;
+      img {
+        display: none;
       }
     }
   }

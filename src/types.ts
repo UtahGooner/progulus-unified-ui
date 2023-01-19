@@ -67,9 +67,16 @@ export interface UserRating extends BasicRating {
     userRating: number,
 }
 
+export interface SongRatingResponse {
+    user: number;
+    songID: number,
+    rating?:UserRating;
+    ratings: BasicRating[];
+}
+
 export interface SongRating {
-    songID?: number,
-    rating: UserRating,
+    songID: number,
+    rating?: UserRating,
     ratings: BasicRating[],
 }
 

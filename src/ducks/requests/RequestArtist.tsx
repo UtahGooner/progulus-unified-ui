@@ -33,7 +33,7 @@ const RequestArtist: React.FC<RequestArtistProps> = ({data}) => {
                     <AlbumLink artist={data.artist} album={data.album}/>
                 </div>
             )}
-            <div style={{minHeight: '250px'}} onClick={() => onSelectArtist(data.artist)}>
+            <div className="album-cover--container" onClick={() => onSelectArtist(data.artist)}>
                 <AlbumCover artist={data.artist} album={data.album || ''} albumYear={data.albumYear}
                             picture={data.picture}/>
             </div>
